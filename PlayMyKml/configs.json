@@ -1,0 +1,7 @@
+{
+  "name" : "mkyong",
+  "age" : 0,
+  "position" : null,
+  "salary" : 7500,
+  "skills" : [ "java", "python" ]
+}
