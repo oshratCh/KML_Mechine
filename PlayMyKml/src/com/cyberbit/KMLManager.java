@@ -40,7 +40,7 @@ public class KMLManager {
 		
 		@Override
 		public boolean test(KML_Item arg0) {
-			if(arg0 == null || !arg0.GetLevel(predicate_num).equals(predicate_level))
+			if(arg0 == null || !arg0.GetLevel(predicate_num).equalsIgnoreCase(predicate_level))
 				return false;
 			return true;
 		}

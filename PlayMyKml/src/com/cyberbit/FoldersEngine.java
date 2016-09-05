@@ -14,7 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 
 public class FoldersEngine {
 	
-	Config config = new Config();
+	Config config = Config.GetIntance();
 	
 	public boolean run()
 	{

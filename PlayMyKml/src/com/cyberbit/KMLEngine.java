@@ -2,9 +2,12 @@ package com.cyberbit;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +20,14 @@ import modal.Config;
 import modal.KML_Item;
 
 public class KMLEngine {
-	Config config = new Config();
+	Config config = Config.GetIntance();
 	KMLManager kmlManager ;
+	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
 	
 	public boolean run(String started_location)
 	{
+		dateFormat.setLenient(false);
+		
 		String start_location = started_location;
 		ArrayList<Path> all_kmls = GetAllKmlFiles(start_location);
 		ArrayList<KML_Item> KML_list = new ArrayList<>();
@@ -42,9 +48,22 @@ public class KMLEngine {
 	            while(level_folder != null && !level_folder.equals("NONE") && sComp == 0){
 	            	String x1 = ((KML_Item) o1).GetLevel(level_num);
 		            String x2 = ((KML_Item) o2).GetLevel(level_num);
-		            x1.replace("cyrcle", "cycle");
-		            x2.replace("cyrcle", "cycle");
-		            sComp = x1.compareTo(x2);
+		            if(isValidDate(x1) && isValidDate(x2))
+		            {
+		            	Date x1date = null;
+		            	Date x2date = null;
+		            	try {
+							x1date = dateFormat.parse(x1.trim());
+							x2date = dateFormat.parse(x2.trim());
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		            	sComp = x1date.compareTo(x2date);
+		            }
+		            else{
+		            	sComp = x1.compareToIgnoreCase(x2);
+		            }
 		            level_num++;
 		            level_folder = ((KML_Item) o1).GetLevel(level_num);
 	            }
@@ -66,6 +85,15 @@ public class KMLEngine {
 		
 		return true;
 	}
+	
+	protected boolean isValidDate(String inDate) {
+	    try {
+	      dateFormat.parse(inDate.trim());
+	    } catch (ParseException pe) {
+	      return false;
+	    }
+	    return true;
+	  }
 	
 
 	
@@ -123,7 +151,7 @@ public class KMLEngine {
 			//this flag is to help us to get only the first level that the kml match, so we can filter the kml that path_arrayList items account match to levels account.
 			Boolean match_level = false;
 			while(level_regex != null && !match_level){
-				Pattern pattern = Pattern.compile(level_regex+".*");
+				Pattern pattern = Pattern.compile(level_regex+".*", Pattern.CASE_INSENSITIVE);
 				Matcher m = pattern.matcher(kml_path);
 				if(m.find()){
 					Map<String, String> map = new HashMap<String, String>();
@@ -147,10 +175,20 @@ public class KMLEngine {
 		
 		for (Map<String, String> level_match : matches) {
 			String match_string = level_match.get("level_regex");
-			Pattern pattern = Pattern.compile(match_string+".*");
+			Pattern pattern = Pattern.compile(match_string+".*", Pattern.CASE_INSENSITIVE);
 			Matcher m = pattern.matcher(level_match.get("kml_path"));
 			if(m.find()){
 				String result = m.group(1);
+				if(result.startsWith("cyrcle"))
+					result = result.replace("cyrcle", "cycle");
+				if(result.startsWith("Nexus"))
+					result = result.replace("Nexus", "nexus");
+				if(result.startsWith("iPhone"))
+					result = result.replace("iPhone", "iphone");
+				if(result.startsWith("morning"))
+					result = result.replace("morning", "cycle_1");
+				if(result.startsWith("afternoon"))
+					result = result.replace("afternoon", "cycle_2");
 				list.add(result);
 			}
 		}
