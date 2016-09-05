@@ -31,6 +31,7 @@ public class KML_Converter {
 		NodeList timeNode = getKmlPoints( pathname, "when");
 		NodeList coordNode = getKmlPoints( pathname, "gx:coord");
 		for (int i = 0; i < coordNode.getLength(); i++) {
+			sectionContent = new HashMap<String, String>();
 			sectionContent.put("SERVICE_NAME", "reference");
 			if(timeNode.item(i) != null)
 				sectionContent.put("INTERCEPTION_INFO_INTERCEPTION_TIME", timeNode.item(i).getTextContent());

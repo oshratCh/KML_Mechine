@@ -183,6 +183,8 @@ public class KMLEngine {
 					result = result.replace("cyrcle", "cycle");
 				if(result.startsWith("Nexus"))
 					result = result.replace("Nexus", "nexus");
+				if(result.startsWith("Android"))
+					result = result.replace("Android", "nexus");
 				if(result.startsWith("iPhone"))
 					result = result.replace("iPhone", "iphone");
 				if(result.startsWith("morning"))

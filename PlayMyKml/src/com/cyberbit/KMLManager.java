@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -115,7 +116,9 @@ public class KMLManager {
 			if(item.kml_path.endsWith(".kml")){
 				KML_Converter kml_Converter = new KML_Converter();
 				List<Map<String, String>> allPlacemarks1 = kml_Converter.parseFileData(item.kml_path);
-				AddNewGroup(allPlacemarks1, "reference" ,parent);	
+				String kml_name =  FilenameUtils.getBaseName(item.kml_path);
+				Folder folder = AddNewFolder(kml_name, parent);
+				AddNewGroup(allPlacemarks1, "" ,folder);	
 
 				
 			}
