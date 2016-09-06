@@ -23,6 +23,7 @@ public class KMLEngine {
 	Config config = Config.GetIntance();
 	KMLManager kmlManager ;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
+	Log_Converter log_Converter = new Log_Converter();
 	
 	public boolean run(String started_location)
 	{
@@ -133,7 +134,10 @@ public class KMLEngine {
 		if(matches.size() == 3)
 		{
 			ArrayList<String> foldersArrayList =  getArrayOfFoldersName(matches);
-			return new KML_Item(kml_path, foldersArrayList);	
+			KML_Item item = new KML_Item(kml_path, foldersArrayList);
+			if(config.isContainsKMLAction()){
+				item.setKMLPoints(log_Converter.GetPointsByServiceName(kml_path));
+			}
 		}
 		return null;
 		

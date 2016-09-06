@@ -1,6 +1,8 @@
 package modal;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class KML_Item {
 	public String kml_path;
@@ -10,7 +12,8 @@ public class KML_Item {
 	String level_4;
 	String level_5;
 	String level_6;
-	//String level_1,String level_2,String level_3,String level_4,String level_6
+	Map<String, List<Map<String, String>>> kml_points;
+	
 	public KML_Item(String kml_path,ArrayList<String> levels){
 		this.kml_path = kml_path;
 		if(levels.size() > 0)
@@ -25,6 +28,10 @@ public class KML_Item {
 			this.level_5  = levels.get(4);
 		if(levels.size() > 5)
 			this.level_6  = levels.get(5);
+	}
+	
+	public void setKMLPoints(Map<String, List<Map<String, String>>> points){
+		kml_points = points;
 	}
 	
 	public String GetLevel(int num){
