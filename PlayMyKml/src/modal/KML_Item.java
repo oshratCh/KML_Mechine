@@ -34,6 +34,10 @@ public class KML_Item {
 		kml_points = points;
 	}
 	
+	public Map<String, List<Map<String, String>>> getKMLPoints(){
+		return kml_points;
+	}
+	
 	public String GetLevel(int num){
 		switch (num) {
 		case 0:

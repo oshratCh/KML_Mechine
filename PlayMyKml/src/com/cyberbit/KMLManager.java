@@ -16,6 +16,8 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.*;
+
+import modal.Config;
 import modal.KML_Item;
 
 import de.micromata.opengis.kml.v_2_2_0.Document;
@@ -60,7 +62,10 @@ public class KMLManager {
 		grn_pushpin.setHref("http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png");
 		Folder root_folder = kml_main_doc.createAndAddFolder();
 		root_folder.setName("Root KML");
-		AddAllKMLS(KML_list,0, root_folder);
+		if(Config.isContainsKMLAction())
+			AddAllKMLSwithInKMLAction(KML_list,0,root_folder);
+		else
+			AddAllKMLS(KML_list,0, root_folder);
 		
 		try {
 			my_kml.marshal(new File("./tmp/mergedFile.kml"));

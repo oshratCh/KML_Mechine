@@ -131,13 +131,14 @@ public class KMLEngine {
 			System.out.println("-----match path:" + match.toString());
 		}
 		//TODO: change number 3 to count of levels
-		if(matches.size() == 3)
+		if(matches.size() == config.GetNumOfLevels())
 		{
 			ArrayList<String> foldersArrayList =  getArrayOfFoldersName(matches);
 			KML_Item item = new KML_Item(kml_path, foldersArrayList);
 			if(config.isContainsKMLAction()){
 				item.setKMLPoints(log_Converter.GetPointsByServiceName(kml_path));
 			}
+			return item;
 		}
 		return null;
 		
