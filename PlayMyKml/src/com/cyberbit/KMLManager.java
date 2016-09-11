@@ -100,6 +100,48 @@ public class KMLManager {
 		return true;
 	}
 	
+	private Boolean AddAllKMLSwithInKMLAction(ArrayList<KML_Item> items, int num_level, Folder parent){
+		String kmls_levels = "";
+		
+		for (int i = 0; i < items.size(); i++) {
+			int max_num_level = items.get(i).GetNumOfLevels();
+			if( items.size()!= 1  && num_level !=  max_num_level && (num_level >  max_num_level || !items.get(i).GetLevel(num_level).equals(kmls_levels) ))
+			{
+				kmls_levels = items.get(i).GetLevel(num_level);
+				ArrayList<KML_Item> same_level_items = new ArrayList<>();
+				if(kmls_levels.contains("KML:")){
+					Set<String> all_values = KML_Separator.GetAllValuesByKMLKey("SERVICE_NAME", items);
+					for (String value : all_values) {
+						for (KML_Item kml_Item : items) {
+							List<Map<String, String>> point_match_lavel = KML_Separator.GetAllPointsByKMLKey(value, kml_Item);
+							if(point_match_lavel != null && !point_match_lavel.isEmpty()){
+								Folder folder = AddNewFolder(value, parent);
+								AddAllKMLS(same_level_items, num_level+1, folder);
+							}
+						}
+					}
+				}
+				else{
+					predicate_level = items.get(i).GetLevel(num_level);
+					predicate_num = num_level;
+					same_level_items =  (ArrayList<KML_Item>)(Object)items.stream().filter(predicate).collect(Collectors.toList());
+					Folder folder = AddNewFolder(kmls_levels, parent);
+					AddAllKMLS(same_level_items, num_level+1, folder);
+				}
+			}
+			else{
+				if(items.size() == 1 || num_level == max_num_level){
+					AddNewKML(items.get(i), parent);
+				}
+			}
+		}
+		return true;
+	}
+	
+	
+	
+	
+	
 	private Folder AddNewFolder(String FolderName, Folder parent){
 			Folder folder = parent.createAndAddFolder();
 			folder.setName(FolderName);

@@ -130,8 +130,7 @@ public class KMLEngine {
 		for (Map<String,String> match : matches) {
 			System.out.println("-----match path:" + match.toString());
 		}
-		//TODO: change number 3 to count of levels
-		if(matches.size() == config.GetNumOfLevels())
+		if(matches.size() == config.GetNumOfAllLevels())
 		{
 			ArrayList<String> foldersArrayList =  getArrayOfFoldersName(matches);
 			KML_Item item = new KML_Item(kml_path, foldersArrayList);
@@ -158,7 +157,7 @@ public class KMLEngine {
 			while(level_regex != null && !match_level){
 				Pattern pattern = Pattern.compile(level_regex+".*", Pattern.CASE_INSENSITIVE);
 				Matcher m = pattern.matcher(kml_path);
-				if(m.find()){
+				if(m.find() || level_regex.contains("KML:")){
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("kml_path", kml_path);
 					map.put("level_regex", level_regex);
@@ -180,23 +179,28 @@ public class KMLEngine {
 		
 		for (Map<String, String> level_match : matches) {
 			String match_string = level_match.get("level_regex");
-			Pattern pattern = Pattern.compile(match_string+".*", Pattern.CASE_INSENSITIVE);
-			Matcher m = pattern.matcher(level_match.get("kml_path"));
-			if(m.find()){
-				String result = m.group(1);
-				if(result.startsWith("cyrcle"))
-					result = result.replace("cyrcle", "cycle");
-				if(result.startsWith("Nexus"))
-					result = result.replace("Nexus", "nexus");
-				if(result.startsWith("Android"))
-					result = result.replace("Android", "nexus");
-				if(result.startsWith("iPhone"))
-					result = result.replace("iPhone", "iphone");
-				if(result.startsWith("morning"))
-					result = result.replace("morning", "cycle_1");
-				if(result.startsWith("afternoon"))
-					result = result.replace("afternoon", "cycle_2");
-				list.add(result);
+			if(match_string.contains("KML:")){
+				list.add(match_string);
+			}
+			else{
+				Pattern pattern = Pattern.compile(match_string+".*", Pattern.CASE_INSENSITIVE);
+				Matcher m = pattern.matcher(level_match.get("kml_path"));
+				if(m.find()){
+					String result = m.group(1);
+					if(result.startsWith("cyrcle"))
+						result = result.replace("cyrcle", "cycle");
+					if(result.startsWith("Nexus"))
+						result = result.replace("Nexus", "nexus");
+					if(result.startsWith("Android"))
+						result = result.replace("Android", "nexus");
+					if(result.startsWith("iPhone"))
+						result = result.replace("iPhone", "iphone");
+					if(result.startsWith("morning"))
+						result = result.replace("morning", "cycle_1");
+					if(result.startsWith("afternoon"))
+						result = result.replace("afternoon", "cycle_2");
+					list.add(result);
+				}
 			}
 		}
 		return list;
