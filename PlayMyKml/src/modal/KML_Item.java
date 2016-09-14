@@ -1,6 +1,7 @@
 package modal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,17 @@ public class KML_Item {
 			this.level_5  = levels.get(4);
 		if(levels.size() > 5)
 			this.level_6  = levels.get(5);
+	}
+	public KML_Item(KML_Item item){
+		this.kml_path = item.kml_path;
+		this.level_1 = item.level_1;
+		this.level_2 = item.level_2;
+		this.level_3 = item.level_3;
+		this.level_4 = item.level_4;
+		this.level_5 = item.level_5;
+		this.level_6 = item.level_6;
+		
+		this.kml_points = new HashMap<String, List<Map<String,String>>>(item.getKMLPoints());
 	}
 	
 	public void setKMLPoints(Map<String, List<Map<String, String>>> points){

@@ -46,6 +46,7 @@ public class KMLEngine {
 
 	            int level_num = 0, sComp = 0;
 	            String level_folder = "";
+	            level_folder = ((KML_Item) o1).GetLevel(level_num);
 	            while(level_folder != null && !level_folder.equals("NONE") && sComp == 0){
 	            	String x1 = ((KML_Item) o1).GetLevel(level_num);
 		            String x2 = ((KML_Item) o2).GetLevel(level_num);
@@ -157,7 +158,7 @@ public class KMLEngine {
 			while(level_regex != null && !match_level){
 				Pattern pattern = Pattern.compile(level_regex+".*", Pattern.CASE_INSENSITIVE);
 				Matcher m = pattern.matcher(kml_path);
-				if(m.find() || level_regex.contains("KML:")){
+				if(m.find() || (level_regex.contains("KML:") && kml_path.contains("wbeout.log"))){
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("kml_path", kml_path);
 					map.put("level_regex", level_regex);

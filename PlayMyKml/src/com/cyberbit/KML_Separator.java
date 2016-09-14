@@ -24,16 +24,26 @@ public class KML_Separator {
 	}
 	
 	
-	public static List<Map<String, String>> GetAllPointsByKMLKey(String key, KML_Item item){
+	public static Map<String, List<Map<String, String>>> GetAllPointsByKMLKey(String key, KML_Item item){
 		String filter_key = key;
 		filter_key = filter_key.trim();
 		Map<String, List<Map<String, String>>> kml_points = item.getKMLPoints();
 		if(kml_points.containsKey(filter_key)){
-			return kml_points.get(filter_key);
+			List<Map<String, String>> points = kml_points.get(filter_key);
+			kml_points.clear();
+			kml_points.put(filter_key, points);
+			return kml_points;
 		}
 		else{
 			return null;
 		}
 	}	
+	
+	public static Boolean IsLogFile(KML_Item item){
+		if(item.kml_path.contains("wbeout.log"))
+			return true;
+		return false;
+		
+	}
 
 }

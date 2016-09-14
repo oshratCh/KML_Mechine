@@ -20,8 +20,6 @@ public class PlayMyKml {
 		if(args.length != 0)
 			config_json_path = args[0];
 		play.run(config_json_path);
-		/*Config config = null;*/
-	    /*ObjectMapper mapper = new ObjectMapper();*/
 	}
 	
 	private void run(String config_json_path){

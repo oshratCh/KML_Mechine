@@ -23,14 +23,15 @@ public class Config {
 		if(config == null){
 			config = new Config();
 			level_1.add("KML:SERVICE_NAME");
-			level_2.add("D:\\LFA\\([0-9]*.[0-9]*)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*\\.*\\(cycle_1|cyrcle_1|morning)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*\\.*\\(cycle_2|cyrcle_2|afternoon)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*\\.*\\(cycle_3|cyrcle_3)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*\\(reference)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(iphone)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(nexus|Android)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(reference)");
+			level_1.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
+			level_2.add("D:\\LFA\\([0-9]*.[0-9]*[A-Za-z0-9_]*)");
+			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_1|cyrcle_1|morning)");
+			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_2|cyrcle_2|afternoon)");
+			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_3|cyrcle_3)");
+			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
+			level_4.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(iphone)");
+			level_4.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(nexus|Android)");
+			level_4.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
 			if(isUseKmlBody())
 				isInKMLAction = true;
 			else
@@ -98,15 +99,6 @@ public class Config {
 			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(iphone)");
 			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(nexus|Android)");
 			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
-			
-			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\([0-9]*.[0-9]*)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\.*\\(cycle_1|cyrcle_1|morning)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\.*\\(cycle_2|cyrcle_2|afternoon)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\.*\\(cycle_3|cyrcle_3)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\(reference)");
-			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\(iphone)");
-			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\(nexus|Android)");
-			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*\\(reference)")
 			
 			level_1.add("KML:SERVICE_NAME");
 			level_2.add("D:\\LFA\\([0-9]*.[0-9]*)");
