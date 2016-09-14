@@ -119,7 +119,11 @@ public class KMLManager {
 			}
 			else{
 				if(items.size() == 1 || num_level == max_num_level){
-					AddNewKML(items.get(i), parent);
+					Folder folder = parent;
+					if( num_level != max_num_level){
+						folder = AddNewFolder(items.get(i).GetLevel(num_level), parent);
+					}
+					AddNewKML(items.get(i), folder);
 				}
 			}
 		}
