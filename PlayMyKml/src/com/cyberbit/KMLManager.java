@@ -47,7 +47,7 @@ public class KMLManager {
 		
 		@Override
 		public boolean test(KML_Item arg0) {
-			if(arg0 == null || !arg0.GetLevel(by_class_filte_num).equalsIgnoreCase(by_class_filte_level))
+			if(arg0 == null || (!arg0.GetLevel(by_class_filte_num).equalsIgnoreCase(by_class_filte_level)))
 				return false;
 			return true;
 		}
@@ -57,7 +57,7 @@ public class KMLManager {
 		
 		@Override
 		public boolean test(KML_Item arg0) {
-			if(arg0 == null || !arg0.getKMLPoints().containsKey(by_service_filter_serviceKey))
+			if(arg0 == null || !arg0.getKMLPoints().containsKey(by_service_filter_serviceKey) && !arg0.kml_path.contains("reference"))
 				return false;
 			return true;
 		}
@@ -101,6 +101,56 @@ public class KMLManager {
 		}
 		return true;
 		
+	}
+	
+	public Boolean runAddWinFolders(String merged_kml_folder ,ArrayList<KML_Item> KML_list){
+		String inKml_level = KML_list.get(0).GetLevel(0);
+		inKml_level = inKml_level.split("KML:")[1].trim();
+		Set<String> all_values = KML_Separator.GetAllValuesByKMLKey(inKml_level, KML_list);
+		for (String key_value : all_values) {
+			//Folder folder = AddNewFolder(key_value, kml);
+			by_service_filter_serviceKey = key_value;
+			ArrayList<KML_Item> same_service_items =  (ArrayList<KML_Item>)(Object)KML_list.stream().filter(by_service_filter).collect(Collectors.toList());
+			same_service_items = filterKMLItemPointsByServiceName(same_service_items, key_value);
+			//AddAllKMLS(same_service_items, 0,folder);
+		}
+		return true;
+		
+	}
+	
+	private void CreateKML(String merged_kml_folder ,ArrayList<KML_Item> KML_list){
+		my_kml = KmlFactory.createKml();
+		kml_main_doc=my_kml.createAndSetDocument();
+		kml_main_doc.setName("Marge kml");
+		de.micromata.opengis.kml.v_2_2_0.Style style = kml_main_doc.createAndAddStyle();
+		style.setId("style");
+		IconStyle iconStyle=style.createAndSetIconStyle();
+		iconStyle.setScale(1.0d);
+		Icon grn_pushpin = iconStyle.createAndSetIcon();
+		grn_pushpin.setHref("http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png");
+		LabelStyle style_label =  style.createAndSetLabelStyle();
+		style_label.withScale(0.0d);
+		
+		de.micromata.opengis.kml.v_2_2_0.Style reference_style = kml_main_doc.createAndAddStyle().withId("reference");
+		LabelStyle reference_label =  reference_style.createAndSetLabelStyle();
+		reference_label.withColor("ff0000ff");
+		reference_label.setColorMode(ColorMode.NORMAL);
+		reference_label.withScale(0.5d);
+		IconStyle reference_icon = reference_style.createAndSetIconStyle();
+		reference_icon.setScale(1.0d);
+		reference_icon.createAndSetIcon().setHref("http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png");
+		
+		Folder root_folder = kml_main_doc.createAndAddFolder();
+		root_folder.setName("Root KML");
+		
+		AddAllKMLSwithInKMLAction(KML_list,0,root_folder);
+		
+		try {
+			my_kml.marshal(new File("./tmp/"+merged_kml_folder+"/mergedFile.kml"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private Boolean AddAllKMLS(ArrayList<KML_Item> items, int num_level, Folder parent){
@@ -201,7 +251,13 @@ public class KMLManager {
 	
 	private Boolean AddNewKMLInKMLAction(KML_Item item, Folder parent){
 		//Folder folder = AddNewFolder(kml_name, parent);
-		AddNewGroup(item.getKMLPoints().get(by_service_filter_serviceKey), "" ,parent);	
+		if(item.kml_path.endsWith(".log"))
+			AddNewGroup(item.getKMLPoints().get(by_service_filter_serviceKey), "" ,parent);
+		if(item.kml_path.endsWith(".kml")){
+			String kml_name =  FilenameUtils.getBaseName(item.kml_path);
+			Folder folder = AddNewFolder(kml_name, parent);
+			AddNewGroup(item.getKMLPoints().get("reference"), "reference" ,folder);
+		}
 		return true;
 	}
 	

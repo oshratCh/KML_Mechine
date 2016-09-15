@@ -24,6 +24,7 @@ public class KMLEngine {
 	KMLManager kmlManager ;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
 	Log_Converter log_Converter = new Log_Converter();
+	KML_Converter kml_Converter = new KML_Converter();
 	
 	public boolean run(String started_location)
 	{
@@ -64,7 +65,10 @@ public class KMLEngine {
 		            	sComp = x1date.compareTo(x2date);
 		            }
 		            else{
-		            	sComp = x1.compareToIgnoreCase(x2);
+		            	if(Config.isContainsKMLAction() && level_num == 0)
+		            		sComp = 0;
+		            	else
+		            		sComp = x1.compareToIgnoreCase(x2);
 		            }
 		            level_num++;
 		            level_folder = ((KML_Item) o1).GetLevel(level_num);
@@ -136,7 +140,13 @@ public class KMLEngine {
 			ArrayList<String> foldersArrayList =  getArrayOfFoldersName(matches);
 			KML_Item item = new KML_Item(kml_path, foldersArrayList);
 			if(config.isContainsKMLAction()){
-				item.setKMLPoints(log_Converter.GetPointsByServiceName(kml_path));
+				if(item.kml_path.endsWith(".log"))
+					item.setKMLPoints(log_Converter.GetPointsByServiceName(kml_path));
+				if(item.kml_path.endsWith(".kml")){
+					Map<String, List<Map<String, String>>> points = new HashMap<>();
+					points.put("reference", kml_Converter.parseFileData(kml_path));
+					item.setKMLPoints(points);
+				}
 			}
 			return item;
 		}
