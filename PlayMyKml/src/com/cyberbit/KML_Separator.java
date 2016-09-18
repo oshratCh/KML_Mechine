@@ -20,6 +20,7 @@ public class KML_Separator {
 			Set<String> alGroups = kmlPoints.keySet();
 			values.addAll(alGroups);
 		}
+		values.remove("reference");
 		return values;
 	}
 	

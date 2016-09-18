@@ -42,8 +42,8 @@ public class PlayMyKml {
 	}
 	
 	private String GetStartLocation() {
-		//return "\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION";
-		return "D:\\LFA";
+		return "\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION";
+		//return "D:\\LFA";
 		
 	}
 }

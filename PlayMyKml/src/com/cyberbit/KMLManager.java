@@ -103,21 +103,23 @@ public class KMLManager {
 		
 	}
 	
-	public Boolean runAddWinFolders(String merged_kml_folder ,ArrayList<KML_Item> KML_list){
+	public Boolean runAddWinFolders(ArrayList<KML_Item> KML_list){
 		String inKml_level = KML_list.get(0).GetLevel(0);
 		inKml_level = inKml_level.split("KML:")[1].trim();
 		Set<String> all_values = KML_Separator.GetAllValuesByKMLKey(inKml_level, KML_list);
 		for (String key_value : all_values) {
-			//Folder folder = AddNewFolder(key_value, kml);
+			//Create win folder
+			new File("./tmp/"+key_value).mkdirs();
 			by_service_filter_serviceKey = key_value;
 			ArrayList<KML_Item> same_service_items =  (ArrayList<KML_Item>)(Object)KML_list.stream().filter(by_service_filter).collect(Collectors.toList());
-			same_service_items = filterKMLItemPointsByServiceName(same_service_items, key_value);
-			//AddAllKMLS(same_service_items, 0,folder);
+			same_service_items = CopyKMLItemPointsByServiceName(same_service_items, key_value);
+			CreateKML(key_value,same_service_items);
 		}
 		return true;
 		
 	}
 	
+
 	private void CreateKML(String merged_kml_folder ,ArrayList<KML_Item> KML_list){
 		my_kml = KmlFactory.createKml();
 		kml_main_doc=my_kml.createAndSetDocument();
@@ -141,9 +143,9 @@ public class KMLManager {
 		reference_icon.createAndSetIcon().setHref("http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png");
 		
 		Folder root_folder = kml_main_doc.createAndAddFolder();
-		root_folder.setName("Root KML");
+		root_folder.setName(merged_kml_folder);
 		
-		AddAllKMLSwithInKMLAction(KML_list,0,root_folder);
+		AddAllKMLS(KML_list, 1, root_folder);
 		
 		try {
 			my_kml.marshal(new File("./tmp/"+merged_kml_folder+"/mergedFile.kml"));
@@ -188,17 +190,13 @@ public class KMLManager {
 			Folder folder = AddNewFolder(key_value, parent);
 			by_service_filter_serviceKey = key_value;
 			ArrayList<KML_Item> same_service_items =  (ArrayList<KML_Item>)(Object)items.stream().filter(by_service_filter).collect(Collectors.toList());
-			same_service_items = filterKMLItemPointsByServiceName(same_service_items, key_value);
+			same_service_items = CopyKMLItemPointsByServiceName(same_service_items, key_value);
 			AddAllKMLS(same_service_items, num_level+1,folder);
 		}
 		return true;
 	}
 	
-	
-	
-	
-	
-	private ArrayList<KML_Item> filterKMLItemPointsByServiceName( ArrayList<KML_Item> same_service_items, String service_key) {
+	private ArrayList<KML_Item> CopyKMLItemPointsByServiceName( ArrayList<KML_Item> same_service_items, String service_key) {
 		ArrayList<KML_Item> copy_list = new ArrayList<KML_Item>(same_service_items);
 		for (KML_Item kml_Item : copy_list) {
 			KML_Item copy_item = new KML_Item(kml_Item);
@@ -252,7 +250,7 @@ public class KMLManager {
 	private Boolean AddNewKMLInKMLAction(KML_Item item, Folder parent){
 		//Folder folder = AddNewFolder(kml_name, parent);
 		if(item.kml_path.endsWith(".log"))
-			AddNewGroup(item.getKMLPoints().get(by_service_filter_serviceKey), "" ,parent);
+			AddNewGroup(item.getKMLPoints().get(by_service_filter_serviceKey), by_service_filter_serviceKey ,parent);
 		if(item.kml_path.endsWith(".kml")){
 			String kml_name =  FilenameUtils.getBaseName(item.kml_path);
 			Folder folder = AddNewFolder(kml_name, parent);

@@ -87,7 +87,10 @@ public class KMLEngine {
 		}
 		
 		kmlManager = new KMLManager();
-		kmlManager.run(KML_list);
+		if(!Config.isCreateWinFolders())
+			kmlManager.run(KML_list);
+		else
+			kmlManager.runAddWinFolders(KML_list);
 		
 		return true;
 	}
