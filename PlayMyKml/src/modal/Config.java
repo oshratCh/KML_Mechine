@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Config {
 	static Config config;
+	static String mode;
 	static ArrayList<String> level_1 = new ArrayList<String>();
 	static ArrayList<String> level_2 = new ArrayList<String>();
 	static ArrayList<String> level_3 = new ArrayList<String>();
@@ -22,16 +23,17 @@ public class Config {
 	public static Config GetIntance(){
 		if(config == null){
 			config = new Config();
+			mode = "statics"; // "create"
 			level_1.add("WIN KML:SERVICE_NAME");
-			level_1.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
-			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\([0-9]*.[0-9]*[A-Za-z0-9_]*)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_1|cyrcle_1|morning)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_2|cyrcle_2|afternoon)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_3|cyrcle_3)");
-			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
-			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(iphone)");
-			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(nexus|Android)");
-			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
+			level_1.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
+			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\([0-9]*.[0-9]*[A-Za-z0-9_]*Stationary)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\.*\\(cycle_1|cyrcle_1|morning)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\.*\\(cycle_2|cyrcle_2|afternoon)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\.*\\(cycle_3|cyrcle_3)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
+			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(iphone)");
+			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(nexus|Android)");
+			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
 			/*level_1.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
 			level_2.add("D:\\LFA\\([0-9]*.[0-9]*[A-Za-z0-9_]*)");
 			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_1|cyrcle_1|morning)");
@@ -48,6 +50,12 @@ public class Config {
 		}
 		return config;
 		
+	}
+	
+	public static Boolean IsStaticsMode(){
+		if(mode.equalsIgnoreCase("statics"))
+			return true;
+		return false;
 	}
 	private static boolean isUseKmlBody() {
 		if(GetAllInKMLLevels().size() > 0)

@@ -86,13 +86,29 @@ public class KMLEngine {
 			System.out.println("-----folders:" + folders.GetLevel(3));
 		}
 		
+		
+		if(Config.IsStaticsMode()){
+			LOGStaticsMode(KML_list);
+		}
+		else{
+			KMLCreatoeMode(KML_list);
+		}
+		
+		
+		return true;
+	}
+	
+	protected void KMLCreatoeMode(ArrayList<KML_Item> KML_list) {
 		kmlManager = new KMLManager();
 		if(!Config.isCreateWinFolders())
 			kmlManager.run(KML_list);
 		else
 			kmlManager.runAddWinFolders(KML_list);
-		
-		return true;
+	}
+	
+	protected void LOGStaticsMode(ArrayList<KML_Item> KML_list) {
+		LogStatics_Manager logStatics_Manager = new LogStatics_Manager();
+		logStatics_Manager.run(KML_list);
 	}
 	
 	protected boolean isValidDate(String inDate) {
