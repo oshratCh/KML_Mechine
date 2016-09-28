@@ -16,13 +16,10 @@ public class PlayMyKml {
 	public static void main(String[] args) {
 	    
 		PlayMyKml play = new PlayMyKml();
-		String config_json_path = null;
-		if(args.length != 0)
-			config_json_path = args[0];
-		play.run(config_json_path);
+		play.run();
 	}
 	
-	private void run(String config_json_path){
+	private void run(){
 	
 		KMLEngine kmlEngine = new KMLEngine();
 		String started_location = GetStartLocation();
@@ -42,8 +39,8 @@ public class PlayMyKml {
 	}
 	
 	private String GetStartLocation() {
-		return "\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION";
-		//return "D:\\LFA";
+		Config config = Config.GetIntance();
+		return Config.startLocation;
 		
 	}
 }

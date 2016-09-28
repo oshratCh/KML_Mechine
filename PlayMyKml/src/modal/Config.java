@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Config {
 	static Config config;
+	public static String startLocation;
 	static String mode;
 	static ArrayList<String> level_1 = new ArrayList<String>();
 	static ArrayList<String> level_2 = new ArrayList<String>();
@@ -23,7 +24,9 @@ public class Config {
 	public static Config GetIntance(){
 		if(config == null){
 			config = new Config();
-			mode = "statics"; // "create"
+			//base path
+			startLocation = "\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION";
+			mode = "statics"; 
 			level_1.add("WIN KML:SERVICE_NAME");
 			level_1.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
 			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\([0-9]*.[0-9]*[A-Za-z0-9_]*Stationary)");
@@ -34,15 +37,7 @@ public class Config {
 			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(iphone)");
 			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(nexus|Android)");
 			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
-			/*level_1.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
-			level_2.add("D:\\LFA\\([0-9]*.[0-9]*[A-Za-z0-9_]*)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_1|cyrcle_1|morning)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_2|cyrcle_2|afternoon)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_3|cyrcle_3)");
-			level_3.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(iphone)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(nexus|Android)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");*/
+
 			if(isUseKmlBody())
 				isInKMLAction = true;
 			else
@@ -105,15 +100,9 @@ public class Config {
 		return false;
 			
 	}
-	/*level_1.add("D:\\LFA\\([0-9].[0-9]*)");
-			level_2.add("D:\\LFA\\[0-9].[0-9]*\\.*\\(cycle_1|cyrcle_1)");
-			level_2.add("D:\\LFA\\[0-9].[0-9]*\\.*\\(cycle_2|cyrcle_2)");
-			level_2.add("D:\\LFA\\[0-9].[0-9]*\\.*\\(cycle_3|cyrcle_3)");
-			level_2.add("D:\\LFA\\[0-9].[0-9]*\\(reference)");
-			level_3.add("D:\\LFA\\[0-9].[0-9]*\\(iphone)");
-			level_3.add("D:\\LFA\\[0-9].[0-9]*\\(nexus)");
-			level_3.add("D:\\LFA\\[0-9].[0-9]*\\(reference)");
-			
+	/*	
+			//Task 1: merge all kmls to one big kml
+			mode =  "create";
 			level_1.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\([0-9]*.[0-9]*[A-Za-z0-9_]*)");
 			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_1|cyrcle_1|morning)");
 			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\.*\\(cycle_2|cyrcle_2|afternoon)");
@@ -123,6 +112,10 @@ public class Config {
 			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(nexus|Android)");
 			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*\\(reference)");
 			
+			//Task 2: create folders for each protocol,
+			// in every folder one kml with the point from the protocol and references points
+			// order by Date -> Cycle -> Device or Reference
+			mode =  "create";
 			level_1.add("KML:SERVICE_NAME");
 			level_2.add("D:\\LFA\\([0-9]*.[0-9]*)");
 			level_3.add("D:\\LFA\\[0-9]*.[0-9]*\\.*\\(cycle_1|cyrcle_1|morning)");
@@ -131,7 +124,24 @@ public class Config {
 			level_3.add("D:\\LFA\\[0-9]*.[0-9]*\\(reference)");
 			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(iphone)");
 			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(nexus|Android)");
-			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(reference)");*/
+			level_4.add("D:\\LFA\\[0-9]*.[0-9]*\\(reference)");
+			
+			//Task 3: create one statics log file, each protocol -> date -> cycle -> device 
+			// avg distance from the reference point
+			// daily avg and standard deviation 
+			// each app sum avg and standard deviation
+			
+			mode = "statics"; 
+			level_1.add("WIN KML:SERVICE_NAME");
+			level_1.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
+			level_2.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\([0-9]*.[0-9]*[A-Za-z0-9_]*Stationary)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\.*\\(cycle_1|cyrcle_1|morning)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\.*\\(cycle_2|cyrcle_2|afternoon)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\.*\\(cycle_3|cyrcle_3)");
+			level_3.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)");
+			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(iphone)");
+			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(nexus|Android)");
+			level_4.add("\\\\192.168.10.95\\Home\\pcaps\\Oshrat\\LFA\\LOCATION\\[0-9]*.[0-9]*[A-Za-z0-9_]*Stationary\\(reference)"); */
 	
 	public String GetFullPathLevel(int level, int num)
 	{

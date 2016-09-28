@@ -25,9 +25,6 @@ public class FoldersEngine {
 	private boolean runOnConfigFolders(){
 		String start_location = GetStartLocation();
 		File file = new File(start_location);
-		//Pattern pattern = Pattern.compile(config.GetFullPathLevel(1,0));
-		//Matcher m = pattern.matcher(file.getPath());
-		//move on start location and find folders that match to level_1
 		
 		ArrayList<String> arr = GetSubFolderMatchLavel(start_location, 0);
 		
@@ -93,8 +90,6 @@ public class FoldersEngine {
 		for (String string : all_kml_files) {
 			System.out.println("kml file:" + string);
 		}
-		//KMLManager manager = new KMLManager(all_kml_files);
-		//manager.Merge();
 	}
 	
 	private ArrayList<String> GetAllKmlFiles(String base_path)
